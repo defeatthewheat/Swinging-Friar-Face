@@ -1,0 +1,77 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "defeatthewheat",
+    "longName": "SwingingFriar",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/watchface.png",
+                "menuIcon": true,
+                "name": "FACE",
+                "type": "png"
+            },
+            {
+                "file": "images/Black_BACK_ALT-numbered.png",
+                "name": "BACK_NUMBERED",
+                "type": "png"
+            },
+            {
+                "file": "images/blackBAT2_alt.png",
+                "name": "BLACK_BAT",
+                "type": "png"
+            },
+            {
+                "file": "images/WHITEBAT2_alt.png",
+                "name": "WHITEBAT2",
+                "type": "png"
+            },
+            {
+                "file": "images/friar_arm-2-WHITEBAT_alt.png",
+                "name": "WHITEBAT",
+                "type": "png"
+            },
+            {
+                "file": "images/Black_BACK_ALT.png",
+                "name": "BLACK_BACK_ALT",
+                "type": "png"
+            },
+            {
+                "file": "fonts/knuckle down.ttf",
+                "name": "KNUCKLE_DOWN_18",
+                "type": "font"
+            },
+            {
+                "file": "images/FriarClockBlack.png",
+                "name": "BLACK_BACK",
+                "type": "png"
+            },
+            {
+                "file": "images/bat-arm-white.png",
+                "name": "BAT_ARM",
+                "type": "png"
+            },
+            {
+                "file": "images/invert-arm.png",
+                "name": "INVERT_ARM",
+                "type": "png"
+            },
+            {
+                "file": "images/Friarclock.png",
+                "name": "friarclock",
+                "type": "png"
+            }
+        ]
+    },
+    "sdkVersion": "2",
+    "shortName": "SwingingFriar",
+    "uuid": "4cc6bac3-7a15-4926-96ee-ab0aa60d764c",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
+    }
+}
