@@ -4,10 +4,15 @@
         ""
     ],
     "companyName": "defeatthewheat",
-    "longName": "SwingingFriar",
+    "longName": "TheSwingingFriar",
     "projectType": "native",
     "resources": {
         "media": [
+            {
+                "file": "images/Black_BACK_ALT-altered.png",
+                "name": "BACK_MOVED",
+                "type": "png"
+            },
             {
                 "file": "images/watchface.png",
                 "menuIcon": true,
@@ -72,6 +77,6 @@
     "versionCode": 1,
     "versionLabel": "1.0",
     "watchapp": {
-        "watchface": false
+        "watchface": true
     }
 }

@@ -100,8 +100,8 @@ static const GPathInfo MINUTE_HAND_POINTS =
 
 static const GPathInfo HOUR_HAND_POINTS = {
   4, (GPoint []){
-    {-3, 6},
-		{3, 6},
+    {-3, 8},
+		{3, 8},
     {3, -60},
 		{-3, -60}
   }

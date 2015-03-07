@@ -35,16 +35,17 @@ Window *window;
 int offset = 0;
 
 static void bg_update_proc(Layer *layer, GContext *ctx) {
-  graphics_fill_rect(ctx, layer_get_bounds(layer), 0, GCornerNone);
+	graphics_fill_rect(ctx, layer_get_bounds(layer), 0, GCornerNone);
 	
-  graphics_context_set_fill_color(ctx, GColorClear);
+  graphics_context_set_fill_color(ctx, GColorBlack);
   for (int i = 0; i < NUM_CLOCK_TICKS; ++i) {
     gpath_draw_filled(ctx, tick_paths[i]);
   }
 }
 
 static void hands_update_proc(Layer *layer, GContext *ctx) {
-  GRect bounds = layer_get_bounds(layer); 
+  GRect bounds = layer_get_bounds(layer);
+	GRect r;
   time_t now = time(NULL);
   struct tm *t = localtime(&now);
 	
@@ -53,6 +54,7 @@ static void hands_update_proc(Layer *layer, GContext *ctx) {
   gpath_draw_filled(ctx, hour_arrow);
   gpath_draw_outline(ctx, hour_arrow);
 		
+	
 	//Offsets depending on minute hand
 	if((t->tm_min < 15) || (t->tm_min >=58)){
 		offset = 16;
@@ -62,8 +64,18 @@ static void hands_update_proc(Layer *layer, GContext *ctx) {
 		offset = 14;
 	}
 	
+	int32_t minuteAngle = (t->tm_min-offset) * TRIG_MAX_ANGLE / 60;
+	//int32_t minuteAngle = 15 * TRIG_MAX_ANGLE / 60;
+	
+	r = layer_get_frame((Layer *)s_friar_arm);
+	r.origin.x = 72 - r.size.w/2 + 57 * cos_lookup((minuteAngle + 3 * TRIG_MAX_ANGLE / 4)%TRIG_MAX_ANGLE) / TRIG_MAX_RATIO;
+	r.origin.y = 84 - r.size.h/2 + 57 * sin_lookup((minuteAngle + 3 * TRIG_MAX_ANGLE / 4)%TRIG_MAX_ANGLE) / TRIG_MAX_RATIO;
+	layer_set_frame((Layer *)s_friar_arm, r);
+	rot_bitmap_layer_set_angle(s_friar_arm, minuteAngle);
+	
 	//Friar Minute Hand
-	rot_bitmap_layer_set_angle(s_friar_arm, TRIG_MAX_ANGLE * (t->tm_min-offset) / 60 );
+	//rot_bitmap_layer_set_angle(s_friar_arm, TRIG_MAX_ANGLE * ((t->tm_min)-offset) / 60 );
+	//rot_bitmap_layer_set_angle(s_friar_arm, (TRIG_MAX_ANGLE * 15)/ 60 );
 	
   // dot in center
   graphics_context_set_fill_color(ctx, GColorWhite);
@@ -94,10 +106,11 @@ static void window_load(Window *window) {
   simple_bg_layer = layer_create(bounds);
   layer_set_update_proc(simple_bg_layer, bg_update_proc);
   layer_add_child(window_layer, simple_bg_layer);
-
+	
+	
 	// Background
-  s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_BACK_NUMBERED);
-  s_background_layer = bitmap_layer_create(GRect(0, -10, 144, 168));
+	s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_BACK_MOVED);
+  s_background_layer = bitmap_layer_create(GRect(0, 0, 144, 168));
   bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
   layer_add_child(window_layer, bitmap_layer_get_layer(s_background_layer));
 	
@@ -110,7 +123,7 @@ static void window_load(Window *window) {
   layer_add_child(window_layer, date_layer);
 
   // init day
-  day_label = text_layer_create(GRect(1, 121, 47, 30));
+  day_label = text_layer_create(GRect(1, 131, 47, 30));
   text_layer_set_text(day_label, day_buffer);
   text_layer_set_background_color(day_label, GColorClear);
   text_layer_set_text_color(day_label, GColorWhite);
@@ -123,7 +136,7 @@ static void window_load(Window *window) {
   layer_add_child(date_layer, text_layer_get_layer(day_label));
 
   // init month num
-  num_label = text_layer_create(GRect(120, 119, 47, 40));
+  num_label = text_layer_create(GRect(120, 129, 47, 40));
 
   text_layer_set_text(num_label, num_buffer);
   text_layer_set_background_color(num_label, GColorClear);
@@ -136,7 +149,8 @@ static void window_load(Window *window) {
 	// Create Friar Minute Hand
 	
 	s_friar_arm = rot_bitmap_layer_create(s_friar_arm_bitmap);
-	rot_bitmap_set_src_ic(s_friar_arm, GPoint(1, 9));
+	rot_bitmap_set_src_ic(s_friar_arm, GPoint(0,-48));
+	
 	rot_bitmap_set_compositing_mode(s_friar_arm, GCompOpClear);
 	layer_add_child(window_layer, (Layer *) s_friar_arm);
 	
@@ -178,7 +192,7 @@ static void init(void) {
  	
 	//rot_bitmap_set_src_ic(s_friar_arm, center);
 	s_friar_arm_bitmap = gbitmap_create_with_resource(RESOURCE_ID_WHITEBAT2);
-	gpath_move_to(hour_arrow,center);
+	gpath_move_to(hour_arrow,GPoint(center.x, center.y+8));
 
 	
   // init clock face paths
