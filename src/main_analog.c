@@ -65,8 +65,9 @@ static void hands_update_proc(Layer *layer, GContext *ctx) {
 	}
 	
 	int32_t minuteAngle = (t->tm_min-offset) * TRIG_MAX_ANGLE / 60;
-	//int32_t minuteAngle = 15 * TRIG_MAX_ANGLE / 60;
+	//int32_t minuteAngle = 15 * TRIG_MAX_ANGLE / 60; //test values
 	
+	//Fixed rotational problem with this offsetting
 	r = layer_get_frame((Layer *)s_friar_arm);
 	r.origin.x = 72 - r.size.w/2 + 57 * cos_lookup((minuteAngle + 3 * TRIG_MAX_ANGLE / 4)%TRIG_MAX_ANGLE) / TRIG_MAX_RATIO;
 	r.origin.y = 84 - r.size.h/2 + 57 * sin_lookup((minuteAngle + 3 * TRIG_MAX_ANGLE / 4)%TRIG_MAX_ANGLE) / TRIG_MAX_RATIO;
